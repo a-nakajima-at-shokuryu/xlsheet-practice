@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from "react"
 import classes from "./Cell.module.css"
+import { CellValueState } from "../store/CellValueState"
+import { useRecoilState } from "recoil"
+import { EvaluatedCellValueState } from "../store/EvaluatedCellValueState"
 
 export default function Cell (props) {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useRecoilState(
+    CellValueState(props.cellId)
+  )
+  const evaluatedCellValueState = useRecoilState(
+    EvaluatedCellValueState(props.cellId)
+  )
   const [isEditMode, setIsEditMode] = useState(false)
   const inputRef = useRef(null)
   const handleLabelClick = () => {
@@ -51,7 +59,7 @@ export default function Cell (props) {
         onClick={handleLabelClick}
         data-cell-id={props.cellId}
       >
-        {value}
+        {evaluatedCellValueState}
       </div>
     )
   )
